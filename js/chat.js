@@ -148,6 +148,28 @@ function getColor(user) {
 function getAvatar(user) {
     const color = getColor(user);
 
-    return `https://mkchat-media.distrust.repl.co/avatars/${user}.svg?b=${color.replace("#", "%23")}`;
+    return `https://proxy.mkchat.app/avatars/${user}.svg?b=${color.replace("#", "%23")}`;
     // 🎲🐻
+};
+
+function toggleModal() {
+    document.querySelector(".modal").classList.toggle("invisible");
+};
+
+const closeBtns = document.getElementsByClassName("close");
+for (const btn of closeBtns) {
+    btn.addEventListener("click", event =>  {
+        event.target.parentNode.parentNode.parentNode.classList.add("invisible");
+    });
+};
+
+const navBtns = document.getElementsByClassName("btn-modal-nav");
+for (const btn of navBtns) {
+    btn.addEventListener("click", event =>  {
+        for (const btnAgain of navBtns) {
+            btnAgain.classList.remove("btn-active");
+        };
+        
+        btn.classList.add("btn-active");
+    });
 };
