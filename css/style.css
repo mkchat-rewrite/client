@@ -56,10 +56,6 @@ body {
     background: #686868;
 }
 
-.invisible {
-    display: none;
-}
-
 .modal {
     background: rgba(0, 0, 0, 0.5);
     width: 100%;
@@ -147,4 +143,8 @@ body {
 	.modal-content {
 		width: 90vw
 	}
+}
+
+.invisible {
+    display: none;
 }
