@@ -1,4 +1,4 @@
-const SERVER_URL = "websocket-server.distrust.repl.co";
+const SERVER_URL = "mkchat-prod-server.distrust.repl.co";
 const ws = new WebSocket(`wss://${SERVER_URL}`);
 
 ws.onopen = () => {
@@ -172,4 +172,8 @@ for (const btn of navBtns) {
         
         btn.classList.add("btn-active");
     });
+};
+
+function joinVideo() {
+    window.open(`/vc/#${params.room}`, "_blank");
 };

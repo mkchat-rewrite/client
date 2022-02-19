@@ -9,6 +9,7 @@
     <script src="./js/tata.js"></script>
     <script src="./js/logger.js"></script>
     <script src="./js/chat.js" defer></script>
+    <script src="./js/color.js" defer></script>
 </head>
 <body>
     <div class="modal invisible">
@@ -34,7 +35,7 @@
             <div id="nav">
                 <i class="fa-solid fa-house" onclick="window.location.replace('/')"></i>
                 <i class="fa-solid fa-gear" onclick="toggleModal()"></i>
-                <i class="fa-solid fa-video"></i>
+                <i class="fa-solid fa-video" onclick="joinVideo()"></i>
             </div>
             <div id="userlist"></div>
         </div>
@@ -43,7 +44,18 @@
             <button type="submit" class="btn btn-primary" id="send">Send</button>
         </form>
         <div id="messages">
-            <div id="messagelist"></div>
+            <div id="messagelist">
+                <div class="message">
+                    <img src="https://proxy.mkchat.app/avatars/_.svg?b=%23a8f07a" alt="" class="avatar" />
+                    <div class="author">author<span class="badge">badge</span>
+                        <span class="timestamp">99:99 PM</span>
+                    </div>
+                    <div class="content">
+                        <p class="text">some text <span class="mention">@test</span> more text <span class="mention">#test</span></p>
+                        <img src="https://proxy.mkchat.app/stickers/781291131828699156" alt="" class="sticker">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>

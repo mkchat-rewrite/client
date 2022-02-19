@@ -1,5 +1,5 @@
 (async () => {
-    const res = await fetch("//mkmotd.glitch.me/");
+    const res = await fetch("//motd.mkchat.app/");
     const data = await res.text();
     document.getElementById("motd").innerHTML = data;
 })();

@@ -41,7 +41,7 @@ body {
 }
 
 .btn-primary {
-    background: #449cf8;
+    background: var(--accent);
 }
 
 .btn-primary:hover {

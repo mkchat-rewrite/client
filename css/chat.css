@@ -75,8 +75,8 @@ input[type=file]{
 }
 
 #nav i:hover {
-    color: #449cf8;
-    text-shadow: 0px 0px 5px #449cf8;
+    color: var(--accent);
+    text-shadow: 0px 0px 5px var(--accent);
     transform: rotate(360deg);
 }
 
@@ -112,7 +112,7 @@ input[type=file]{
 }
 
 #msg:focus {
-    outline: solid .15rem #449cf8;
+    outline: solid .15rem var(--accent);
 }
 
 #msg::placeholder {
@@ -175,7 +175,7 @@ input[type=file]{
 }
 
 .badge {
-    background: #449cf8;
+    background: var(--accent);
     color: #f0f0f0;
     padding: .25rem .5rem;
     border: none;
@@ -189,4 +189,29 @@ input[type=file]{
     font-size: .7rem;
     color: #969696;
     margin-left: .5rem;
+}
+
+.mention {
+    background: rgba(var(--accent-r), var(--accent-g), var(--accent-b), .2);
+    padding: .01rem .2rem;
+    border-radius: .2rem;
+    cursor: pointer;
+    transition: .15s;
+}
+
+.mention:hover {
+    background: rgba(var(--accent-r), var(--accent-g), var(--accent-b), .3);
+}
+
+.sticker {
+    width: 9rem;
+    height: 9rem;
+    border-radius: 1rem;
+    transition: .2s;
+    cursor: pointer;
+    margin-top: .5rem;
+}
+
+.sticker:hover {
+    background: rgba(255, 255, 255, .05);
 }

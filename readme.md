@@ -1,4 +1,4 @@
 todo:
-    - add back support for changing accent color + more customization ig
+    - add back support for changing accent color (almost done) + more customization ig
     
-    - auto scroll when new messages are recieved (still not fixed you dumb shit)
+    - auto scroll when new messages are recieved that actually works
