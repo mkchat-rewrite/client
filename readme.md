@@ -1,4 +1,1 @@
-todo:
-    - add back support for changing accent color (almost done) + more customization ig
-    
-    - auto scroll when new messages are recieved that actually works
+This repo only contains the client code, the actual full mkchat repo with the server and client combined are [here](https://github.com/mkchat-rewrite/server)
