@@ -17,12 +17,13 @@
 		@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
 	
 		#color-grid {
-				width: 30rem;
-				background: #2E3440;
-				display: grid;
-				gap: .75rem;
-				grid-template-columns: repeat(4, auto);
-				place-content: center;
+    background: #2E3440;
+    display: grid;
+    gap: .75rem;
+    grid-template-columns: repeat(4, auto);
+    place-content: center;
+    padding: .75rem;
+    border-radius: .6rem;
 		}
 
 		.color-cell {
