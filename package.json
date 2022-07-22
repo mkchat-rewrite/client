@@ -1,6 +1,18 @@
 {
   "name": "mkchat-client",
   "version": "0.0.1",
+  "devDependencies": {
+    "@sveltejs/adapter-auto": "next",
+    "@sveltejs/adapter-node": "^1.0.0-next.83",
+    "@sveltejs/kit": "next",
+    "svelte": "^3.44.0",
+    "svelte-adapter-bun": "^0.3.1",
+    "svelte-check": "^2.7.1",
+    "svelte-preprocess": "^4.10.7",
+    "tslib": "^2.3.1",
+    "typescript": "^4.7.4",
+    "vite": "^3.0.0"
+  },
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
@@ -10,17 +22,6 @@
     "prepare": "svelte-kit sync",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch"
-  },
-  "devDependencies": {
-    "@sveltejs/adapter-auto": "next",
-    "@sveltejs/kit": "next",
-    "svelte": "^3.44.0",
-    "svelte-adapter-bun": "^0.3.1",
-    "svelte-check": "^2.7.1",
-    "svelte-preprocess": "^4.10.7",
-    "tslib": "^2.3.1",
-    "typescript": "^4.7.4",
-    "vite": "^3.0.0"
   },
   "type": "module"
 }
