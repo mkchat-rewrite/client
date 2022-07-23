@@ -6,7 +6,7 @@
     export let maxlength = -1;
     export let required = false;
 
-    let isFocus = false;
+    let isFocus = !!value;
 
     const handleFocus = (event: FocusEvent) => {
         const element = event.target as HTMLInputElement;
@@ -18,7 +18,7 @@
 
 <span>
     <span class="label" hidden={!isFocus}>{placeholder}</span>
-    <input type="text" value={value} name={name} placeholder={placeholder} autocomplete={autocomplete} maxlength={maxlength} required={required} on:focus={handleFocus} on:blur={handleFocus} />
+    <input type="text" value={value} name={name} placeholder={placeholder} autocomplete={autocomplete} maxlength={maxlength} required={required} on:focus={handleFocus} on:blur={handleFocus} on:load={onload} />
 </span>
 
 <style>
