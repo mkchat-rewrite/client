@@ -35,7 +35,6 @@
 
     input {
         width: 100%;
-        margin-bottom: .25em;
     }
 
     .label {
