@@ -3,6 +3,7 @@
     export let name = "";
     export let placeholder = "";
     export let autocomplete: "on" | "off" = "on";
+    export let spellcheck: boolean = true;
     export let maxlength = -1;
     export let required = false;
 
@@ -25,7 +26,7 @@
 
 <span>
     <span class="label" hidden={!isFocus}>{placeholder}</span>
-    <input type="text" value={value} name={name} placeholder={placeholder} autocomplete={autocomplete} maxlength={maxlength} required={required} on:focus={handleFocus} on:blur={handleFocus} on:input={onchange} />
+    <input type="text" value={value} name={name} placeholder={placeholder} autocomplete={autocomplete} spellcheck={spellcheck} maxlength={maxlength} required={required} on:focus={handleFocus} on:blur={handleFocus} on:input={onchange} />
 </span>
 
 <style>
