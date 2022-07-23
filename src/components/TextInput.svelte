@@ -35,7 +35,7 @@
 
     input {
         width: 100%;
-        margin-bottom: .5em;
+        margin-bottom: .25em;
     }
 
     .label {
