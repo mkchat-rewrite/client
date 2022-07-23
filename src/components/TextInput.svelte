@@ -1,5 +1,11 @@
 <script lang="ts">
+    export let value: string | null = null;
+    export let name = "";
     export let placeholder = "";
+    export let autocomplete: "on" | "off" = "on";
+    export let maxlength = -1;
+    export let required = false;
+
     let isFocus = false;
 
     const handleFocus = (event: FocusEvent) => {
@@ -12,7 +18,7 @@
 
 <span>
     <span class="label" hidden={!isFocus}>{placeholder}</span>
-    <input type="text" placeholder={placeholder} on:focus={handleFocus} on:blur={handleFocus} />
+    <input type="text" value={value} name={name} placeholder={placeholder} autocomplete={autocomplete} maxlength={maxlength} required={required} on:focus={handleFocus} on:blur={handleFocus} />
 </span>
 
 <style>

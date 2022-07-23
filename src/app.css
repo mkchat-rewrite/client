@@ -112,15 +112,3 @@ button:hover {
         background-color: #f9f9f9;
     }
 }
-
-.form {
-    display: flex;
-    flex-direction: column;
-    background-color: rgb(32, 32, 36);
-    min-width: 400px;
-    width: 25rem;
-    height: 20rem;
-    padding: 0rem 1.75rem;
-    border-radius: 8px;
-    justify-content: space-evenly;
-}
