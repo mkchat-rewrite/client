@@ -40,7 +40,7 @@
         background-color: rgb(32, 32, 36);
         min-width: 400px;
         width: 25rem;
-        height: 20rem;
+        height: 20.5rem;
         padding: 0rem 1.75rem;
         border-radius: 8px;
         justify-content: space-evenly;
