@@ -24,6 +24,13 @@
 </main>
 
 <style>
+    main {
+        place-items: center;
+        justify-content: center; /* needed for some mobile devices */
+        text-align: center;
+        overflow: hidden;
+    }
+
     form {
         display: flex;
         flex-direction: column;

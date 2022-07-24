@@ -43,5 +43,15 @@
     });
 </script>
   
-<h1>{title}</h1>
-<pre>{description}</pre>
+<main>
+    <h1>{title}</h1>
+    <pre>{description}</pre>
+</main>
+
+<style>
+    main {
+        place-items: center;
+        justify-content: center; /* needed for some mobile devices */
+        flex-direction: column;
+    }
+</style>
