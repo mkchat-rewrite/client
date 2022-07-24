@@ -1,8 +1,17 @@
-<script lang="ts">
-    let motd: string = "Distrust was here 🥸";
+<script>
+    const fetchMotd = async () => {
+        const res = await fetch("https://mkchat.app/motd");
+        return await res.text();
+    };
 </script>
 
-<h6>{motd}</h6>
+{#await fetchMotd()}
+	<h6>Fetching motd...</h6>
+{:then motd}
+	<h6>{motd}</h6>
+{:catch}
+    <h6>Failed to fetch MOTD</h6>
+{/await}
 
 <style>
     h6 {

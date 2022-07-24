@@ -17,6 +17,10 @@
         <TextInput value="main" name="room" placeholder="Room" autocomplete="off" spellcheck={false} required />
         <button>Join</button>
     </form>
+    <span class="external-links">
+        <a href="https://discord.gg/GbWngkTSZg" target="_blank"><i class="fa-brands fa-discord"></i></a>
+        <a href="https://mkchat.app/about.html" target="_blank"><i class="fa-solid fa-circle-info"></i></a>
+    </span>
 </main>
 
 <style>
@@ -30,5 +34,25 @@
         padding: 0rem 1.75rem;
         border-radius: 8px;
         justify-content: space-evenly;
+        box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    .external-links {
+        position: absolute;
+        bottom: .5em;
+        right: .5em;
+        display: flex;
+        gap: .75em;
+    }
+
+    .external-links i {
+        transition: background-color .15s;
+        cursor: pointer;
+        font-size: 1.5rem;
+        color: rgb(158, 158, 158);
+    }
+
+    .external-links i:hover {
+        color: var(--accent);
     }
 </style>
