@@ -1,8 +1,8 @@
 <script lang="ts">
     let emojiList: string[];
-    let input: HTMLInputElement;
+    export let inputEl: HTMLInputElement;
     let searchQuery: string;
-    let showEmojiPopup: boolean = false;
+    export let show: boolean = false;
     
     async function loadEmoji(query?: string) {
         if (!emojiList) {
@@ -32,64 +32,31 @@
 
     const codePointToEmoji = (codePoint: string) => String.fromCodePoint(...codePoint.split("-").map(x => parseInt(x, 16)));
 
-    function test(e: MouseEvent) {
-        insertAtCaret(input, (e.target as HTMLSpanElement).innerText);
+    function insertEmoji(e: MouseEvent) {
+        insertAtCaret(inputEl, (e.target as HTMLSpanElement).innerText);
     };
 </script>
 
-<div class="example-wrapper">
-    <div class="emoji-picker" hidden={!showEmojiPopup}>
-        <input bind:value={searchQuery} type="text" placeholder="Search" />
-        <div class="emoji-grid">
-            {#await loadEmoji(searchQuery)}
-                <p>Loading Emoji...</p>
-            {:then emojiList}
+<div class="emoji-picker" hidden={!show}>
+    <input bind:value={searchQuery} type="text" placeholder="Search" />
+    <div class="emoji-grid">
+        {#await loadEmoji(searchQuery)}
+            <p>Loading Emoji...</p>
+        {:then emojiList}
+            {#if emojiList.length}
                 {#each emojiList as emoji}
-                    <span class="emoji" on:click={test}>{codePointToEmoji(emoji)}</span>
+                    <span class="emoji" on:click={insertEmoji}>{codePointToEmoji(emoji)}</span>
                 {/each}
-            {:catch}
-                <p>Error: Unable to load emoji</p>
-            {/await}
-        </div>
-    </div>
-    
-    <div class="input-wrapper">
-        <input class="example-input" bind:this={input} type="text" placeholder="Message">
-        <!-- <i class="fa-solid fa-face-smile" on:click={() => showEmojiPopup = !showEmojiPopup}></i> -->
-        <span class={showEmojiPopup ? "active" : ""} on:click={() => showEmojiPopup = !showEmojiPopup}>😊</span>
+            {:else}
+                <p>No results...</p>
+            {/if}
+        {:catch}
+            <p>Error: Unable to load emoji</p>
+        {/await}
     </div>
 </div>
 
 <style>
-    .example-wrapper {
-        position: relative;
-    }
-
-    .example-input {
-        width: 95vw;
-    }
-
-    .input-wrapper {
-        position: relative;
-    }
-
-    .input-wrapper span {
-        position: absolute;
-        top: 50%;
-        right: .25em;
-        transform: translateY(-50%);
-        font-size: 1.6em;
-        cursor: pointer;
-        opacity: 0.5;
-        transition: .15s filter ease-in-out, .15s opacity ease-in-out;
-        filter: grayscale(1);
-    }
-
-    .input-wrapper > span:hover, span.active {
-        opacity: 1;
-        filter: grayscale(0);
-    }
-
     * {
         -webkit-touch-callout: none; /* iOS Safari */
         -webkit-user-select: none; /* Safari */
@@ -100,7 +67,7 @@
     }
 
     .emoji-picker {
-        background-color: rgb(32, 32, 36);
+        background-color: #2d2d33;
         padding: .75em;
         display: flex;
         flex-direction: column;
