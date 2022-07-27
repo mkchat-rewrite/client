@@ -6,7 +6,7 @@
     
     async function loadEmoji(query?: string) {
         if (!emojiList) {
-            const res = await fetch("https://raw.githubusercontent.com/joypixels/emoji-toolkit/master/emoji.json");
+            const res = await fetch("https://raw.githubusercontent.com/joypixels/emoji-assets/master/emoji.json");
             const data = await res.json();
             emojiList = Object.values(data);
         };
