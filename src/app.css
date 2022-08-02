@@ -6,6 +6,21 @@
     src: url("NotoColorEmoji.ttf");
 }
 
+@font-face {
+    font-family: "AvenirBlack";
+    src: url("AvenirBlack.otf");
+}
+
+@font-face {
+    font-family: "AvenirRoman";
+    src: url("AvenirRoman.otf");
+}
+
+@font-face {
+    font-family: "AvenirBook";
+    src: url("AvenirBook.otf");
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -28,7 +43,7 @@
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
 
-    --accent: #8257e6;
+    --accent: #6f5eea;
 }
   
 a {
@@ -108,3 +123,8 @@ button:hover {
         background-color: #f9f9f9;
     }
 } */
+
+.tata {
+    font-family: system-ui;
+    line-height: normal;
+}

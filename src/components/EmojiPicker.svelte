@@ -1,7 +1,9 @@
 <script lang="ts">
+    import { onMount } from "svelte";
+
     let emojiList: string[];
-    export let inputEl: HTMLInputElement;
     let searchQuery: string;
+    export let inputEl: HTMLInputElement;
     export let show: boolean = false;
     
     async function loadEmoji(query?: string) {
@@ -24,7 +26,6 @@
             el.value = el.value.substring(0, startPos) + value + el.value.substring(endPos, el.value.length);
             el.selectionStart = startPos + value.length;
             el.selectionEnd = startPos + value.length;
-            el.focus();
         } else {
             el.value += value;
         };
@@ -33,7 +34,8 @@
     const codePointToEmoji = (codePoint: string) => String.fromCodePoint(...codePoint.split("-").map(x => parseInt(x, 16)));
 
     function insertEmoji(e: MouseEvent) {
-        insertAtCaret(inputEl, (e.target as HTMLSpanElement).innerText);
+        if (inputEl.maxLength > inputEl.value.length) insertAtCaret(inputEl, (e.target as HTMLSpanElement).innerText);
+        inputEl.focus();
     };
 </script>
 

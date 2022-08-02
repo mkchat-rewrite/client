@@ -22,5 +22,9 @@
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "reconnecting-websocket": "^4.4.0",
+    "tata-js": "^0.1.5"
+  }
 }
