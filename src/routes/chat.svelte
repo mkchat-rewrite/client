@@ -1,14 +1,16 @@
 <script type="ts">
+    import "@lottiefiles/lottie-player";
     import { page } from "$app/stores";
     import EmojiPicker from "../components/EmojiPicker.svelte";
     import * as tata from "tata-js";
 
     const params = $page.url.searchParams;
 
-    const SERVER_URL = "localhost:3000";
-    const ws = new WebSocket(`ws://${SERVER_URL}`);
+    const SERVER_URL = "server.mkchat.app";
+    const ws = new WebSocket(`wss://${SERVER_URL}`);
     let userList: string[] = [];
     let messageList: any[] = [];
+    let sendDisabled: boolean = false;
 
     ws.onopen = () => {
         ws.send(
@@ -24,38 +26,29 @@
 
     ws.onmessage = ({ data }) => {
         const message = JSON.parse(data);
+        console.log(message);
         switch (message.type) {
             case "connect":
                 tata.success("Joined", `You have successfully joined room ${params.get("room")}!`);
                 setInterval(() => ws.send(JSON.stringify({ type: "ping" })), 5000);
                 break;
             case "message":
-                messageList.push(message);
+                messageList = [...messageList, message];
+                autoScroll();
                 break;
             case "updateusers":
-                // const userlist = document.getElementById("userlist");
-                // userlist.innerText = "";
-
-                // for (const user of message.users) {
-                //     const el = document.createElement("div");
-                //     userlist.appendChild(el);
-                //     el.classList.add("user");
-                //     el.innerText = user;
-                // };
                 userList = message.users;
-                console.log(userList);
                 break;
             default:
                 break;
         };
-        console.log(message);
     };
 
     ws.onclose = e => {
         if (e.reason) {
-            // disconnect(e.reason, false);
+            disconnect(e.reason, false);
         } else {
-            // disconnect(null, true);
+            disconnect(null, true);
         };
     };
 
@@ -75,6 +68,7 @@
 
     let showEmojiPopout: boolean = false;
     let inputEl: HTMLInputElement;
+    let messages: HTMLDivElement;
 
     function getColor(key: string) {
         let hash = key.length;
@@ -89,81 +83,85 @@
     };
 
     function getAvatar(key: string) {
-        return `https://avatars.dicebear.com/api/croodles-neutral/sfosdfsdfdsfsdfm-seed.svg?b=${getColor(key).replace("#", "%23")}`;
+        return `https://rail-proxy.mkchat.app/dicebear/avatars/${key}.svg?b=${getColor(key).replace("#", "%23")}`;
     };
 
-    function sendMessage() {
-        console.log("this");
+    function sendMessage(ev: KeyboardEvent) {
+        if (ev.keyCode !== 13 || sendDisabled) return;
+
+        const el = ev.target as HTMLInputElement;
+
+        ws.send(JSON.stringify({
+            type: "message",
+            text: el.value
+        }));
+
+        el.value = "";
+
+        sendDisabled = true;
+        setTimeout(() => sendDisabled = false, 3000);
+    };
+
+    function autoScroll() {
+        messages.scrollTo(0, messages.scrollHeight);
     };
 </script>
 
 <main>
     <div class="nav-bar">
+        <span class="nav-btn" on:click={() => window.location.href = "/"}>
+            <i class="fa-solid fa-house"></i>
+        </span>
+        <span class="nav-btn">
+            <i class="fa-solid fa-users"></i>
+        </span>
+        <span class="nav-btn" on:click={() => window.open(`/vc#${params.get("room")}`)}>
+            <i class="fa-solid fa-video"></i>
+        </span>
+        <span class="nav-btn">
+            <i class="fa-solid fa-gear"></i>
+        </span>
     </div>
     <div class="userlist">
         {#if userList.length}
             {#each userList as user}
                 <div class="user">
                     <img class="avatar" src={getAvatar(user)} alt="avatar" />
-                    <span>Distrust</span>
+                    <span>{user}</span>
                 </div>
             {/each}
         {/if}
     </div>
-    <div class="message-list">
-        <!-- {#if messageList.length}
+    <div class="message-list" bind:this={messages}>
+        {#if messageList.length > 0}
             {#each messageList as message}
                 <div class="message">
-                    <img class="avatar" src={""} alt="avatar" />
+                    <img class="avatar" src={message.avatar} alt="avatar" />
                     <div class="meta">
-                        <span class="author">Distrust</span>
-                        <span class="badge">
-                            <i class="fa-solid fa-shield"></i>
-                            <span>Moderator</span>
+                        <span style={`color: ${message.color}`} class="author">{message.author}</span>
+                        <span class="badge" hidden={!message.badge}>
+                            <span>{@html message.badge}</span>
                         </span>
-                        <span class="timestamp">12:58 AM</span>
+                        <span class="timestamp">{new Date(message.date).toLocaleTimeString("en-US", { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone }).replace(/:[0-9]{2} /g, " ")}</span>
                     </div>
                     <div class="content">
-                        <p class="text">some text <span class="mention">@test</span> more text <span class="mention">#test</span></p>
-                        <img src="https://rail-proxy.mkchat.app/discord/stickers/781291131828699156" alt="discord-sticker" class="sticker">
+                        <p class="text">{@html message.text}</p>
+                        {#if message.sticker}
+                            {#if message.sticker.type === 1}
+                                <img src={message.sticker.url} alt="discord-sticker" class="sticker">
+                            {:else}
+                                <lottie-player class="sticker" src={message.sticker.url} background="transparent" speed="1" autoplay loop></lottie-player>
+                            {/if}
+                        {/if}
                     </div>
                 </div>
             {/each}
-        {/if} -->
-        <!-- <div class="message">
-            <img class="avatar"  src="https://mkchat.app/imgs/favicon.png" alt="avatar" />
-            <div class="meta" style="color: rgb(255, 255, 255);">
-                <span class="author">SERVER</span>
-                <span class="badge">
-                    <i class="fa-solid fa-shield"></i>
-                    <span>System</span>
-                </span>
-                <span class="timestamp">12:58 AM</span>
-            </div>
-            <div class="content">
-                <p class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum veniam maiores modi omnis optio, sint nostrum libero dolore non tempora. Blanditiis provident accusantium consequuntur tempora, possimus iure obcaecati voluptas tempore? Labore corrupti doloribus omnis, autem nihil distinctio molestias magnam quas tenetur voluptatibus veritatis architecto ex laboriosam, at quibusdam vero, alias ipsam quod cupiditate laborum fuga. Ea, perferendis facere officia magnam nam debitis commodi distinctio temporibus expedita quas quo delectus obcaecati voluptates, odit corporis illo sunt repellendus vitae quaerat cumque. Molestias, voluptatum! Necessitatibus eaque error sint! Rem earum vitae ea inventore quisquam corporis dolores distinctio qui labore error? Dicta, numquam esse commodi distinctio nobis delectus ipsam quis aspernatur! Sed libero, atque sequi, accusamus corrupti esse ipsam obcaecati praesentium necessitatibus facilis deserunt quo suscipit, minima nam et? Error illum facilis ipsa, amet necessitatibus alias accusantium voluptates hic inventore, corporis magnam, soluta distinctio libero vitae! A deserunt suscipit delectus quia repudiandae quam totam provident officiis alias beatae inventore incidunt eligendi vel nemo sapiente, debitis quibusdam id nisi asperiores corrupti. Aliquam unde ipsa magnam harum qui id mollitia explicabo, quasi, quo odio blanditiis quis quibusdam laborum assumenda et provident asperiores nisi repellat deserunt nostrum voluptatum quod ex ratione voluptates. Saepe consectetur id veritatis mollitia.</p>
-            </div>
-        </div> -->
-        <!-- <div class="message">
-            <img class="avatar" src={""} alt="avatar" />
-            <div class="meta">
-                <span class="author">Distrust</span>
-                <span class="badge">
-                    <i class="fa-solid fa-shield"></i>
-                    <span>Moderator</span>
-                </span>
-                <span class="timestamp">12:58 AM</span>
-            </div>
-            <div class="content">
-                <p class="text">some text <span class="mention">@test</span> more text <span class="mention">#test</span></p>
-                <img src="https://rail-proxy.mkchat.app/discord/stickers/781291131828699156" alt="discord-sticker" class="sticker">
-            </div>
-        </div> -->
+        {/if}
     </div>
     <div class="message-input">
         <div class="textbox">
             <EmojiPicker {inputEl} show={showEmojiPopout} />
-            <input bind:this={inputEl} type="text" placeholder="Message" maxlength="250" autocomplete="off" data-emojiable="true" data-emoji-input="unicode" autofocus />
+            <input bind:this={inputEl} type="text" placeholder="Message" maxlength="250" autocomplete="off" data-emojiable="true" data-emoji-input="unicode" on:keypress={sendMessage} autofocus />
             <div class="textbox-media">
                 <span>
                     <label for="file-upload"><i class="fa-solid fa-paperclip" /></label>
@@ -189,6 +187,31 @@
         grid-area: 1 / 1 / 6 / 2;
         background-color: #18181b;
         width: 80px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: .5em;
+        padding: .5em;
+    }
+
+    .nav-bar .nav-btn {
+        width: 60px;
+        height: 60px;
+        display: grid;
+        place-content: center;
+        text-align: center;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1.5em;
+    }
+
+    .nav-bar .nav-btn:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-bar .nav-btn:last-of-type {
+        position: absolute;
+        bottom: .3em;
     }
 
     .userlist {
@@ -299,7 +322,7 @@
     .message {
         padding: 0.5rem;
         word-break: break-all;
-        font-family: "AvenirRoman", sans-serif;
+        font-family: "AvenirRoman", sans-serif, NotoColorEmoji;
     }
 
     .message:hover {
@@ -343,6 +366,10 @@
         color: #cfcfcf;
     }
 
+    .message .content .text img, .message .content .text video {
+        max-width: 200px;
+    }
+ 
     .message .content .mention {
         background: rgba(111, 94, 234, 0.3);
         padding: .01rem .2rem;
@@ -371,5 +398,24 @@
 
     ::-webkit-scrollbar {
         display: none;
+    }
+
+    *[hidden] {
+        display: none;
+    }
+
+    /* mobile */
+    @media (max-width: 40rem) {
+        main {
+            grid-template-columns: unset;
+        }
+
+        .nav-bar, .userlist {
+            display: none;
+        }
+
+        .message-list, .message-input {
+            width: 100vw;
+        }
     }
 </style>

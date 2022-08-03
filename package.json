@@ -24,6 +24,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@lottiefiles/lottie-player": "^1.5.7",
     "reconnecting-websocket": "^4.4.0",
     "tata-js": "^0.1.5"
   }
