@@ -1,16 +1,22 @@
 <script type="ts">
-    import "@lottiefiles/lottie-player";
     import { page } from "$app/stores";
+    import { afterUpdate } from "svelte";
     import EmojiPicker from "../components/EmojiPicker.svelte";
+    import RoomModal from "../components/RoomModal.svelte";
+    import "@lottiefiles/lottie-player";
     import * as tata from "tata-js";
 
     const params = $page.url.searchParams;
 
-    const SERVER_URL = "server.mkchat.app";
-    const ws = new WebSocket(`wss://${SERVER_URL}`);
+    const ws = new WebSocket("wss://server.mkchat.app");
+    // const ws = new WebSocket("ws://localhost:3000");
     let userList: string[] = [];
     let messageList: any[] = [];
     let sendDisabled: boolean = false;
+
+	afterUpdate(() => {
+		autoScroll();
+    });
 
     ws.onopen = () => {
         ws.send(
@@ -34,7 +40,6 @@
                 break;
             case "message":
                 messageList = [...messageList, message];
-                autoScroll();
                 break;
             case "updateusers":
                 userList = message.users;
@@ -46,9 +51,9 @@
 
     ws.onclose = e => {
         if (e.reason) {
-            disconnect(e.reason, false);
+            // disconnect(e.reason, false);
         } else {
-            disconnect(null, true);
+            // disconnect(null, true);
         };
     };
 
@@ -61,13 +66,9 @@
         }, 5000);
     };
 
-    function handleUpload() {
-        const fileList = this.files;
-        console.log(fileList[0]);
-    };
-
     let showEmojiPopout: boolean = false;
     let inputEl: HTMLInputElement;
+    let fileInput: HTMLInputElement;
     let messages: HTMLDivElement;
 
     function getColor(key: string) {
@@ -90,24 +91,43 @@
         if (ev.keyCode !== 13 || sendDisabled) return;
 
         const el = ev.target as HTMLInputElement;
+        const file = fileInput.files[0];
 
-        ws.send(JSON.stringify({
-            type: "message",
-            text: el.value
-        }));
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                ws.send(JSON.stringify({
+                    type: "message",
+                    text: el.value,
+                    file: reader.result as string
+                }));
 
-        el.value = "";
+                fileInput.value = "";
+                el.value = ""; // gotta put this here or value will become blank before read finishes
+            };
+            reader.readAsBinaryString(file);
+        } else {
+            ws.send(JSON.stringify({
+                type: "message",
+                text: el.value
+            }));
+
+            el.value = ""; // same as above clearly
+        };
 
         sendDisabled = true;
         setTimeout(() => sendDisabled = false, 3000);
     };
 
     function autoScroll() {
-        messages.scrollTo(0, messages.scrollHeight);
+        messages.scroll({ top: messages.scrollHeight, behavior: "smooth" });
     };
 </script>
 
 <main>
+    <RoomModal>
+        testd
+    </RoomModal>
     <div class="nav-bar">
         <span class="nav-btn" on:click={() => window.location.href = "/"}>
             <i class="fa-solid fa-house"></i>
@@ -165,7 +185,7 @@
             <div class="textbox-media">
                 <span>
                     <label for="file-upload"><i class="fa-solid fa-paperclip" /></label>
-                    <input on:change={handleUpload} type="file" id="file-upload" accept=".gif,.jpg,.jpeg,.png" hidden />
+                    <input bind:this={fileInput} type="file" id="file-upload" accept=".gif,.jpg,.jpeg,.png,.mp4,.mov,.wmv,.ebm,.mkv,.m4v" hidden />
                 </span>
                 <span class={showEmojiPopout ? "active" : ""} on:click={() => (showEmojiPopout = !showEmojiPopout)}>😊</span>
             </div>
@@ -366,10 +386,6 @@
         color: #cfcfcf;
     }
 
-    .message .content .text img, .message .content .text video {
-        max-width: 200px;
-    }
- 
     .message .content .mention {
         background: rgba(111, 94, 234, 0.3);
         padding: .01rem .2rem;

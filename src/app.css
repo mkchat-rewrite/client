@@ -128,3 +128,10 @@ button:hover {
     font-family: system-ui;
     line-height: normal;
 }
+
+.message .content .text .attachment {
+    max-width: 250px;
+    max-height: 250px;
+    margin-top: 0.5rem;
+    display: block;
+}
