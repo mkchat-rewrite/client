@@ -121,9 +121,12 @@
     };
 
     function autoScroll() {
-        console.log(messages.lastChild);
         const mediaOffset = messages?.lastElementChild?.lastElementChild?.lastElementChild?.lastElementChild?.classList.contains("attachment") ? 250 : 0;
-        if (messages.scrollTop + messages.clientHeight + (messages?.lastElementChild?.clientHeight as number) + mediaOffset >= messages.scrollHeight) {
+        const lastMessageHeight = messages?.lastElementChild?.clientHeight || 0;
+        
+        console.log(messages.scrollTop + messages.clientHeight + lastMessageHeight + mediaOffset, messages.scrollHeight);
+
+        if (messages.scrollTop + messages.clientHeight + lastMessageHeight + mediaOffset >= messages.scrollHeight) {
             messages.scroll({ top: messages.scrollHeight, behavior: "smooth" });
         };
     };
