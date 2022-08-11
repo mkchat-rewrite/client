@@ -13,7 +13,7 @@
             <h2>Welcome to MK Chat</h2>
             <Motd />
         </span>
-        <TextInput name="name" placeholder="Nickname" autocomplete="off" spellcheck={false} maxlength={30} required />
+        <TextInput name="username" placeholder="Nickname" autocomplete="off" spellcheck={false} maxlength={30} required />
         <TextInput value="main" name="room" placeholder="Room" autocomplete="off" spellcheck={false} required />
         <button>Join</button>
     </form>
