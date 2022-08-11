@@ -1,6 +1,6 @@
 <script>
     const fetchMotd = async () => {
-        const res = await fetch("https://mkchat.app/motd");
+        const res = await fetch("https://server.mkchat.app/motd");
         return await res.text();
     };
 </script>
