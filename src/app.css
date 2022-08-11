@@ -132,6 +132,7 @@ button:hover {
 .message .content .text .attachment {
     max-width: 250px;
     max-height: 250px;
+    min-height: 100px;
     margin-top: 0.5rem;
     display: block;
 }

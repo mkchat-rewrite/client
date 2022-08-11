@@ -7,12 +7,19 @@
     import * as tata from "tata-js";
 
     const params = $page.url.searchParams;
+    const username = params.get("username");
+    const room = params.get("room");
 
     const ws = new WebSocket("wss://server.mkchat.app");
     // const ws = new WebSocket("ws://localhost:3000");
     let userList: string[] = [];
     let messageList: any[] = [];
     let sendDisabled: boolean = false;
+    let roomModal: RoomModal;
+    let showEmojiPopout: boolean = false;
+    let inputEl: HTMLInputElement;
+    let fileInput: HTMLInputElement;
+    let messages: HTMLDivElement;
 
 	afterUpdate(() => {
 		autoScroll();
@@ -22,20 +29,17 @@
         ws.send(
             JSON.stringify({
                 type: "join",
-                data: {
-                    room: params.get("room"),
-                    username: params.get("username")
-                }
+                data: { username, room }
             })
         );
     };
 
     ws.onmessage = ({ data }) => {
         const message = JSON.parse(data);
-        console.log(message);
+        // console.log(message);
         switch (message.type) {
             case "connect":
-                tata.success("Joined", `You have successfully joined room ${params.get("room")}!`);
+                tata.success("Joined", `You have successfully joined room ${room}!`);
                 setInterval(() => ws.send(JSON.stringify({ type: "ping" })), 5000);
                 break;
             case "message":
@@ -51,9 +55,9 @@
 
     ws.onclose = e => {
         if (e.reason) {
-            // disconnect(e.reason, false);
+            disconnect(e.reason, false);
         } else {
-            // disconnect(null, true);
+            disconnect(null, true);
         };
     };
 
@@ -65,11 +69,6 @@
             window.location.replace("/");
         }, 5000);
     };
-
-    let showEmojiPopout: boolean = false;
-    let inputEl: HTMLInputElement;
-    let fileInput: HTMLInputElement;
-    let messages: HTMLDivElement;
 
     function getColor(key: string) {
         let hash = key.length;
@@ -92,6 +91,8 @@
 
         const el = ev.target as HTMLInputElement;
         const file = fileInput.files[0];
+
+        if (!file && !el.value) return;
 
         if (file) {
             const reader = new FileReader();
@@ -120,25 +121,40 @@
     };
 
     function autoScroll() {
-        messages.scroll({ top: messages.scrollHeight, behavior: "smooth" });
+        console.log(messages.lastChild);
+        const mediaOffset = messages?.lastElementChild?.lastElementChild?.lastElementChild?.lastElementChild?.classList.contains("attachment") ? 250 : 0;
+        if (messages.scrollTop + messages.clientHeight + (messages?.lastElementChild?.clientHeight as number) + mediaOffset >= messages.scrollHeight) {
+            messages.scroll({ top: messages.scrollHeight, behavior: "smooth" });
+        };
+    };
+
+    function validateAttachment(ev: Event) {
+        const el = ev.target as HTMLInputElement;
+        
+        if (el.files[0].size > 52_428_800) {
+            tata.error("File too big", "The file you tried to upload is too big. Max size is 50MB.");
+            el.value = "";
+        };
+    };
+
+    function openSettings() {
+        tata.info("Settings", "Coming soon!");
     };
 </script>
 
 <main>
-    <RoomModal>
-        testd
-    </RoomModal>
+    <RoomModal bind:this={roomModal} ws={ws} username={username} />
     <div class="nav-bar">
         <span class="nav-btn" on:click={() => window.location.href = "/"}>
             <i class="fa-solid fa-house"></i>
         </span>
-        <span class="nav-btn">
+        <span class="nav-btn" on:click={roomModal.toggle}>
             <i class="fa-solid fa-users"></i>
         </span>
-        <span class="nav-btn" on:click={() => window.open(`/vc#${params.get("room")}`)}>
+        <span class="nav-btn" on:click={() => window.open(`/vc#${room}`)}>
             <i class="fa-solid fa-video"></i>
         </span>
-        <span class="nav-btn">
+        <span class="nav-btn" on:click={openSettings}>
             <i class="fa-solid fa-gear"></i>
         </span>
     </div>
@@ -185,7 +201,7 @@
             <div class="textbox-media">
                 <span>
                     <label for="file-upload"><i class="fa-solid fa-paperclip" /></label>
-                    <input bind:this={fileInput} type="file" id="file-upload" accept=".gif,.jpg,.jpeg,.png,.mp4,.mov,.wmv,.ebm,.mkv,.m4v" hidden />
+                    <input bind:this={fileInput} on:change={validateAttachment} type="file" id="file-upload" accept=".gif,.jpg,.jpeg,.png,.apng,.mp4,.mov,.wmv,.ebm,.mkv,.m4v,.webm" hidden />
                 </span>
                 <span class={showEmojiPopout ? "active" : ""} on:click={() => (showEmojiPopout = !showEmojiPopout)}>😊</span>
             </div>
