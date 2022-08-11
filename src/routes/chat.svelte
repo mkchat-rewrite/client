@@ -121,14 +121,15 @@
     };
 
     function autoScroll() {
-        const mediaOffset = messages?.lastElementChild?.lastElementChild?.lastElementChild?.lastElementChild?.classList.contains("attachment") ? 250 : 0;
-        const lastMessageHeight = messages?.lastElementChild?.clientHeight || 0;
+        // const mediaOffset = messages?.lastElementChild?.lastElementChild?.lastElementChild?.lastElementChild?.classList.contains("attachment") ? 250 : 0;
+        // const lastMessageHeight = messages?.lastElementChild?.clientHeight || 0;
         
-        console.log(messages.scrollTop + messages.clientHeight + lastMessageHeight + mediaOffset, messages.scrollHeight);
+        // console.log(messages.scrollTop + messages.clientHeight + lastMessageHeight + mediaOffset, messages.scrollHeight);
 
-        if (messages.scrollTop + messages.clientHeight + lastMessageHeight + mediaOffset >= messages.scrollHeight) {
-            messages.scroll({ top: messages.scrollHeight, behavior: "smooth" });
-        };
+        // if (messages.scrollTop + messages.clientHeight + lastMessageHeight + mediaOffset >= messages.scrollHeight) {
+        //     messages.scroll({ top: messages.scrollHeight, behavior: "smooth" });
+        // };
+        messages.scroll({ top: messages.scrollHeight, behavior: "smooth" });
     };
 
     function validateAttachment(ev: Event) {
