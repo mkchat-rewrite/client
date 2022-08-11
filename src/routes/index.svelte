@@ -8,7 +8,7 @@
 </head>
 
 <main>
-    <form action="https://mkchat.app/chat.html">
+    <form action="/chat">
         <span>
             <h2>Welcome to MK Chat</h2>
             <Motd />
