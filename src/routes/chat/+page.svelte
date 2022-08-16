@@ -1,8 +1,8 @@
 <script type="ts">
     import { page } from "$app/stores";
     import { afterUpdate } from "svelte";
-    import EmojiPicker from "../components/EmojiPicker.svelte";
-    import RoomModal from "../components/RoomModal.svelte";
+    import EmojiPicker from "../../components/EmojiPicker.svelte";
+    import RoomModal from "../../components/RoomModal.svelte";
     import "@lottiefiles/lottie-player";
     import * as tata from "tata-js";
 
