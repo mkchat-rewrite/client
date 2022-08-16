@@ -21,7 +21,7 @@
 
     function switchRoom(ev: MouseEvent) {
         const el = ev.target as HTMLElement;
-        window.location.replace(`${window.location.origin}${window.location.pathname}?username=${username}&room=${el.getAttribute("data-room")}`);
+        if (window) window.location.replace(`${window.location.origin}${window.location.pathname}?username=${username}&room=${el.getAttribute("data-room")}`);
         // if (ws) ws.send(JSON.stringify({
         //     type: "join",
         //     data: {

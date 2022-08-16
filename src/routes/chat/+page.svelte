@@ -64,9 +64,9 @@
     function disconnect(reason: string | null, rejoin: boolean) {
         tata.error(`Disconnected!`, reason ? `With reason: ${reason}` : "You will automatically reload in 5 seconds.");
         setTimeout(() => {
-            if (rejoin) return window.location.reload();
+            if (rejoin && window) return window?.location?.reload();
 
-            window.location.replace("/");
+            if (window) window?.location?.replace("/");
         }, 5000);
     };
 
@@ -149,13 +149,13 @@
 <main>
     <RoomModal bind:this={roomModal} ws={ws} username={username} />
     <div class="nav-bar">
-        <span class="nav-btn" on:click={() => window.location.href = "/"}>
+        <span class="nav-btn" on:click={() => { if (window && window?.location?.href) window.location.href = "/" } }>
             <i class="fa-solid fa-house"></i>
         </span>
         <span class="nav-btn" on:click={roomModal.toggle}>
             <i class="fa-solid fa-users"></i>
         </span>
-        <span class="nav-btn" on:click={() => window.open(`/vc#${room}`)}>
+        <span class="nav-btn" on:click={() => { if (window && window?.open) window.open(`/vc#${room}`)} }>
             <i class="fa-solid fa-video"></i>
         </span>
         <span class="nav-btn" on:click={openSettings}>
