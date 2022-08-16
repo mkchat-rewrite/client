@@ -1,10 +1,13 @@
 <script type="ts">
     import { page } from "$app/stores";
-    import { afterUpdate } from "svelte";
+    import { afterUpdate, onMount } from "svelte";
     import EmojiPicker from "../../components/EmojiPicker.svelte";
     import RoomModal from "../../components/RoomModal.svelte";
-    import "@lottiefiles/lottie-player";
     import * as tata from "tata-js";
+
+    onMount(async () => {
+        await import("@lottiefiles/lottie-player");
+    });
 
     const params = $page.url.searchParams;
     const username = params.get("username");
