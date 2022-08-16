@@ -3,10 +3,11 @@
     import { afterUpdate, onMount } from "svelte";
     import EmojiPicker from "../../components/EmojiPicker.svelte";
     import RoomModal from "../../components/RoomModal.svelte";
-    import * as tata from "tata-js";
+    let tata: any;
 
     onMount(async () => {
         await import("@lottiefiles/lottie-player");
+        tata = await import("tata-js");
     });
 
     const params = $page.url.searchParams;
