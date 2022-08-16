@@ -12,7 +12,7 @@
 
     const ws = new WebSocket("wss://server.mkchat.app");
     // const ws = new WebSocket("ws://localhost:3000");
-    let userList: string[] = [];
+    let userList: { username: string, avatar: string }[] = [];
     let messageList: any[] = [];
     let sendDisabled: boolean = false;
     let roomModal: RoomModal;
@@ -166,8 +166,8 @@
         {#if userList.length}
             {#each userList as user}
                 <div class="user">
-                    <img class="avatar" src={getAvatar(user)} alt="avatar" />
-                    <span>{user}</span>
+                    <img class="avatar" src={user.avatar} alt="avatar" />
+                    <span>{user.username}</span>
                 </div>
             {/each}
         {/if}
