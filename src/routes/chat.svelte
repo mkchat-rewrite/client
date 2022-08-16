@@ -10,7 +10,7 @@
     const username = params.get("username");
     const room = params.get("room");
 
-    const ws = new WebSocket("wss://server.mkchat.app");
+    const ws = new WebSocket("wss://misty-thunder-2272.fly.dev");
     // const ws = new WebSocket("ws://localhost:3000");
     let userList: { username: string, avatar: string }[] = [];
     let messageList: any[] = [];
