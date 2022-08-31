@@ -1,14 +1,5 @@
 <script lang="ts" context="module">
-    throw new Error("@migration task: Replace error load function (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3293209)");
-
-    // export const load = (data: Record<string, any>) => {
-    //     return {
-    //         props: {
-    //             title: data.status,
-    //             description: data.error?.message
-    //         }
-    //     };
-    // };
+    import { page } from "$app/stores";
 </script>
 
 <script lang="ts">
@@ -46,8 +37,8 @@
 </script>
   
 <main>
-    <h1>{title}</h1>
-    <pre>{description}</pre>
+    <h1>{$page.status}</h1>
+    <pre>{$page.error.message}</pre>
 </main>
 
 <style>
