@@ -4,17 +4,19 @@
     import EmojiPicker from "../../components/EmojiPicker.svelte";
     import RoomModal from "../../components/RoomModal.svelte";
     let tata: any;
+    let ws: any;
 
     onMount(async () => {
         await import("@lottiefiles/lottie-player");
         tata = await import("tata-js");
+
+        ws = new WebSocket("wss://server.mkchat.app");
     });
 
     const params = $page.url.searchParams;
     const username = params.get("username");
     const room = params.get("room");
-
-    const ws = new WebSocket("wss://server.mkchat.app");
+    
     // const ws = new WebSocket("ws://localhost:3000");
     let userList: { username: string, avatar: string }[] = [];
     let messageList: any[] = [];
