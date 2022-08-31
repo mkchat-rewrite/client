@@ -10,7 +10,9 @@
     "svelte-preprocess": "^4.10.7",
     "tslib": "^2.3.1",
     "typescript": "^4.7.4",
-    "vite": "^3.0.0"
+    "vite": "^3.0.0",
+    "workbox-precaching": "^6.5.4",
+    "workbox-window": "^6.5.4"
   },
   "scripts": {
     "dev": "vite dev",
@@ -28,6 +30,9 @@
     "@sveltejs/adapter-static": "^1.0.0-next.39",
     "bson": "^4.6.5",
     "reconnecting-websocket": "^4.4.0",
-    "tata-js": "^0.1.5"
+    "tata-js": "^0.1.5",
+    "workbox": "^0.0.0",
+    "workbox-routing": "^6.5.4",
+    "workbox-strategies": "^6.5.4"
   }
 }

@@ -207,6 +207,7 @@
             <EmojiPicker {inputEl} show={showEmojiPopout} />
             <input bind:this={inputEl} type="text" placeholder="Message" maxlength="250" autocomplete="off" data-emojiable="true" data-emoji-input="unicode" on:keypress={sendMessage} autofocus />
             <div class="textbox-media">
+                <img class="giphy" alt="gif" on:click={tata.info("Giphy Integration", "Coming soon!")} src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAkBAMAAABoCkdnAAAAAXNSR0IB2cksfwAAACFQTFRF//NcycBJ/2Zm/2ZmAAAAmZI3AP+ZXB+ZeSjJmTP/AMz/ZAreOgAAAAt0Uk5T////EAD///////+vi5OCAAAARUlEQVR4nGNggABGJSUTFxcXKI9BFIXLGIrCFYVx09JcwEBJCSRAPldJiTwuCJRXoHI7UbgVM1G4najcmSOAuwoFkMQFAKUeobnEaqXaAAAAAElFTkSuQmCC"/>
                 <span>
                     <label for="file-upload"><i class="fa-solid fa-paperclip" /></label>
                     <input bind:this={fileInput} on:change={validateAttachment} type="file" id="file-upload" accept=".gif,.jpg,.jpeg,.png,.apng,.mp4,.mov,.wmv,.ebm,.mkv,.m4v,.webm" hidden />
@@ -434,6 +435,19 @@
 
     .message .content .sticker:hover {
         background: rgba(255, 255, 255, .05);
+    }
+
+    .giphy {
+        height: 1.6em;
+        cursor: pointer;
+        opacity: 0.5;
+        transition: 0.15s filter ease-in-out, 0.15s opacity ease-in-out;
+        filter: grayscale(1);
+    }
+
+    .giphy:hover {
+        opacity: 1;
+        filter: grayscale(0);
     }
 
     ::-webkit-scrollbar {
