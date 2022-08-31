@@ -11,14 +11,56 @@
         tata = await import("tata-js");
 
         ws = new WebSocket("wss://server.mkchat.app");
+
+        ws.onopen = () => {
+            ws.send(
+                JSON.stringify({
+                    type: "join",
+                    data: { username, room },
+                })
+            );
+        };
+
+        ws.onmessage = ({ data }) => {
+            const message = JSON.parse(data);
+            // console.log(message);
+            switch (message.type) {
+                case "connect":
+                    tata.success(
+                        "Joined",
+                        `You have successfully joined room ${room}!`
+                    );
+                    setInterval(
+                        () => ws.send(JSON.stringify({ type: "ping" })),
+                        5000
+                    );
+                    break;
+                case "message":
+                    messageList = [...messageList, message];
+                    break;
+                case "updateusers":
+                    userList = message.users;
+                    break;
+                default:
+                    break;
+            }
+        };
+
+        ws.onclose = (e) => {
+            if (e.reason) {
+                disconnect(e.reason, false);
+            } else {
+                disconnect(null, true);
+            }
+        };
     });
 
     const params = $page.url.searchParams;
     const username = params.get("username");
     const room = params.get("room");
-    
+
     // const ws = new WebSocket("ws://localhost:3000");
-    let userList: { username: string, avatar: string }[] = [];
+    let userList: { username: string; avatar: string }[] = [];
     let messageList: any[] = [];
     let sendDisabled: boolean = false;
     let roomModal: RoomModal;
@@ -27,70 +69,44 @@
     let fileInput: HTMLInputElement;
     let messages: HTMLDivElement;
 
-	afterUpdate(() => {
-		autoScroll();
+    afterUpdate(() => {
+        autoScroll();
     });
 
-    ws.onopen = () => {
-        ws.send(
-            JSON.stringify({
-                type: "join",
-                data: { username, room }
-            })
-        );
-    };
-
-    ws.onmessage = ({ data }) => {
-        const message = JSON.parse(data);
-        // console.log(message);
-        switch (message.type) {
-            case "connect":
-                tata.success("Joined", `You have successfully joined room ${room}!`);
-                setInterval(() => ws.send(JSON.stringify({ type: "ping" })), 5000);
-                break;
-            case "message":
-                messageList = [...messageList, message];
-                break;
-            case "updateusers":
-                userList = message.users;
-                break;
-            default:
-                break;
-        };
-    };
-
-    ws.onclose = e => {
-        if (e.reason) {
-            disconnect(e.reason, false);
-        } else {
-            disconnect(null, true);
-        };
-    };
-
     function disconnect(reason: string | null, rejoin: boolean) {
-        tata.error(`Disconnected!`, reason ? `With reason: ${reason}` : "You will automatically reload in 5 seconds.");
+        tata.error(
+            `Disconnected!`,
+            reason
+                ? `With reason: ${reason}`
+                : "You will automatically reload in 5 seconds."
+        );
         setTimeout(() => {
             if (rejoin && window) return window?.location?.reload();
 
             if (window) window?.location?.replace("/");
         }, 5000);
-    };
+    }
 
     function getColor(key: string) {
         let hash = key.length;
         for (let i = 0; i < key.length; i++) {
             hash = key.charCodeAt(i) + (hash << 5) - hash;
-        };
+        }
 
         const res = Math.abs(hash % 255);
 
-        const color = ["FF", "99", res.toString(16)].map(c => c.padStart(2, c)).sort(() => 0.5 - res / 255).join("");
+        const color = ["FF", "99", res.toString(16)]
+            .map((c) => c.padStart(2, c))
+            .sort(() => 0.5 - res / 255)
+            .join("");
         return "#" + color;
-    };
+    }
 
     function getAvatar(key: string) {
-        return `https://rail-proxy.mkchat.app/dicebear/avatars/${key}.svg?b=${getColor(key).replace("#", "%23")}`;
-    };
+        return `https://rail-proxy.mkchat.app/dicebear/avatars/${key}.svg?b=${getColor(
+            key
+        ).replace("#", "%23")}`;
+    }
 
     function sendMessage(ev: KeyboardEvent) {
         if (ev.keyCode !== 13 || sendDisabled) return;
@@ -103,69 +119,87 @@
         if (file) {
             const reader = new FileReader();
             reader.onload = () => {
-                ws.send(JSON.stringify({
-                    type: "message",
-                    text: el.value,
-                    file: reader.result as string
-                }));
+                ws.send(
+                    JSON.stringify({
+                        type: "message",
+                        text: el.value,
+                        file: reader.result as string,
+                    })
+                );
 
                 fileInput.value = "";
                 el.value = ""; // gotta put this here or value will become blank before read finishes
             };
             reader.readAsBinaryString(file);
         } else {
-            ws.send(JSON.stringify({
-                type: "message",
-                text: el.value
-            }));
+            ws.send(
+                JSON.stringify({
+                    type: "message",
+                    text: el.value,
+                })
+            );
 
             el.value = ""; // same as above clearly
-        };
+        }
 
         sendDisabled = true;
-        setTimeout(() => sendDisabled = false, 3000);
-    };
+        setTimeout(() => (sendDisabled = false), 3000);
+    }
 
     function autoScroll() {
         // const mediaOffset = messages?.lastElementChild?.lastElementChild?.lastElementChild?.lastElementChild?.classList.contains("attachment") ? 250 : 0;
         // const lastMessageHeight = messages?.lastElementChild?.clientHeight || 0;
-        
+
         // console.log(messages.scrollTop + messages.clientHeight + lastMessageHeight + mediaOffset, messages.scrollHeight);
 
         // if (messages.scrollTop + messages.clientHeight + lastMessageHeight + mediaOffset >= messages.scrollHeight) {
         //     messages.scroll({ top: messages.scrollHeight, behavior: "smooth" });
         // };
         messages.scroll({ top: messages.scrollHeight, behavior: "smooth" });
-    };
+    }
 
     function validateAttachment(ev: Event) {
         const el = ev.target as HTMLInputElement;
-        
+
         if (el.files[0].size > 52_428_800) {
-            tata.error("File too big", "The file you tried to upload is too big. Max size is 50MB.");
+            tata.error(
+                "File too big",
+                "The file you tried to upload is too big. Max size is 50MB."
+            );
             el.value = "";
-        };
-    };
+        }
+    }
 
     function openSettings() {
         tata.info("Settings", "Coming soon!");
-    };
+    }
 </script>
 
 <main>
-    <RoomModal bind:this={roomModal} ws={ws} username={username} />
+    <RoomModal bind:this={roomModal} {ws} {username} />
     <div class="nav-bar">
-        <span class="nav-btn" on:click={() => { if (window && window?.location?.href) window.location.href = "/" } }>
-            <i class="fa-solid fa-house"></i>
+        <span
+            class="nav-btn"
+            on:click={() => {
+                if (window && window?.location?.href)
+                    window.location.href = "/";
+            }}
+        >
+            <i class="fa-solid fa-house" />
         </span>
         <span class="nav-btn" on:click={roomModal.toggle}>
-            <i class="fa-solid fa-users"></i>
+            <i class="fa-solid fa-users" />
         </span>
-        <span class="nav-btn" on:click={() => { if (window && window?.open) window.open(`/vc#${room}`)} }>
-            <i class="fa-solid fa-video"></i>
+        <span
+            class="nav-btn"
+            on:click={() => {
+                if (window && window?.open) window.open(`/vc#${room}`);
+            }}
+        >
+            <i class="fa-solid fa-video" />
         </span>
         <span class="nav-btn" on:click={openSettings}>
-            <i class="fa-solid fa-gear"></i>
+            <i class="fa-solid fa-gear" />
         </span>
     </div>
     <div class="userlist">
@@ -184,19 +218,40 @@
                 <div class="message">
                     <img class="avatar" src={message.avatar} alt="avatar" />
                     <div class="meta">
-                        <span style={`color: ${message.color}`} class="author">{message.author}</span>
+                        <span style={`color: ${message.color}`} class="author"
+                            >{message.author}</span
+                        >
                         <span class="badge" hidden={!message.badge}>
                             <span>{@html message.badge}</span>
                         </span>
-                        <span class="timestamp">{new Date(message.date).toLocaleTimeString("en-US", { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone }).replace(/:[0-9]{2} /g, " ")}</span>
+                        <span class="timestamp"
+                            >{new Date(message.date)
+                                .toLocaleTimeString("en-US", {
+                                    timeZone:
+                                        Intl.DateTimeFormat().resolvedOptions()
+                                            .timeZone,
+                                })
+                                .replace(/:[0-9]{2} /g, " ")}</span
+                        >
                     </div>
                     <div class="content">
                         <p class="text">{@html message.text}</p>
                         {#if message.sticker}
                             {#if message.sticker.type === 1}
-                                <img src={message.sticker.url} alt="discord-sticker" class="sticker">
+                                <img
+                                    src={message.sticker.url}
+                                    alt="discord-sticker"
+                                    class="sticker"
+                                />
                             {:else}
-                                <lottie-player class="sticker" src={message.sticker.url} background="transparent" speed="1" autoplay loop></lottie-player>
+                                <lottie-player
+                                    class="sticker"
+                                    src={message.sticker.url}
+                                    background="transparent"
+                                    speed="1"
+                                    autoplay
+                                    loop
+                                />
                             {/if}
                         {/if}
                     </div>
@@ -207,14 +262,42 @@
     <div class="message-input">
         <div class="textbox">
             <EmojiPicker {inputEl} show={showEmojiPopout} />
-            <input bind:this={inputEl} type="text" placeholder="Message" maxlength="250" autocomplete="off" data-emojiable="true" data-emoji-input="unicode" on:keypress={sendMessage} autofocus />
+            <input
+                bind:this={inputEl}
+                type="text"
+                placeholder="Message"
+                maxlength="250"
+                autocomplete="off"
+                data-emojiable="true"
+                data-emoji-input="unicode"
+                on:keypress={sendMessage}
+                autofocus
+            />
             <div class="textbox-media">
-                <img class="giphy" alt="gif" on:click={tata.info("Giphy Integration", "Coming soon!")} src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAkBAMAAABoCkdnAAAAAXNSR0IB2cksfwAAACFQTFRF//NcycBJ/2Zm/2ZmAAAAmZI3AP+ZXB+ZeSjJmTP/AMz/ZAreOgAAAAt0Uk5T////EAD///////+vi5OCAAAARUlEQVR4nGNggABGJSUTFxcXKI9BFIXLGIrCFYVx09JcwEBJCSRAPldJiTwuCJRXoHI7UbgVM1G4najcmSOAuwoFkMQFAKUeobnEaqXaAAAAAElFTkSuQmCC"/>
+                <img
+                    class="giphy"
+                    alt="gif"
+                    on:click={tata.info("Giphy Integration", "Coming soon!")}
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAkBAMAAABoCkdnAAAAAXNSR0IB2cksfwAAACFQTFRF//NcycBJ/2Zm/2ZmAAAAmZI3AP+ZXB+ZeSjJmTP/AMz/ZAreOgAAAAt0Uk5T////EAD///////+vi5OCAAAARUlEQVR4nGNggABGJSUTFxcXKI9BFIXLGIrCFYVx09JcwEBJCSRAPldJiTwuCJRXoHI7UbgVM1G4najcmSOAuwoFkMQFAKUeobnEaqXaAAAAAElFTkSuQmCC"
+                />
                 <span>
-                    <label for="file-upload"><i class="fa-solid fa-paperclip" /></label>
-                    <input bind:this={fileInput} on:change={validateAttachment} type="file" id="file-upload" accept=".gif,.jpg,.jpeg,.png,.apng,.mp4,.mov,.wmv,.ebm,.mkv,.m4v,.webm" hidden />
+                    <label for="file-upload"
+                        ><i class="fa-solid fa-paperclip" /></label
+                    >
+                    <input
+                        bind:this={fileInput}
+                        on:change={validateAttachment}
+                        type="file"
+                        id="file-upload"
+                        accept=".gif,.jpg,.jpeg,.png,.apng,.mp4,.mov,.wmv,.ebm,.mkv,.m4v,.webm"
+                        hidden
+                    />
                 </span>
-                <span class={showEmojiPopout ? "active" : ""} on:click={() => (showEmojiPopout = !showEmojiPopout)}>😊</span>
+                <span
+                    class={showEmojiPopout ? "active" : ""}
+                    on:click={() => (showEmojiPopout = !showEmojiPopout)}
+                    >😊</span
+                >
             </div>
         </div>
     </div>
@@ -237,8 +320,8 @@
         display: flex;
         align-items: center;
         flex-direction: column;
-        gap: .5em;
-        padding: .5em;
+        gap: 0.5em;
+        padding: 0.5em;
     }
 
     .nav-bar .nav-btn {
@@ -258,7 +341,7 @@
 
     .nav-bar .nav-btn:last-of-type {
         position: absolute;
-        bottom: .3em;
+        bottom: 0.3em;
     }
 
     .userlist {
@@ -286,7 +369,7 @@
     }
 
     .userlist .user:hover {
-        background-color: rgba(255, 255, 255, 0.03)
+        background-color: rgba(255, 255, 255, 0.03);
     }
 
     .userlist .user .avatar {
@@ -415,10 +498,10 @@
 
     .message .content .mention {
         background: rgba(111, 94, 234, 0.3);
-        padding: .01rem .2rem;
-        border-radius: .2rem;
+        padding: 0.01rem 0.2rem;
+        border-radius: 0.2rem;
         cursor: pointer;
-        transition: .15s;
+        transition: 0.15s;
     }
 
     .message .content .mention:hover {
@@ -430,13 +513,13 @@
         width: 9rem;
         height: 9rem;
         border-radius: 1rem;
-        transition: .2s;
+        transition: 0.2s;
         cursor: pointer;
-        margin-top: .5rem;
+        margin-top: 0.5rem;
     }
 
     .message .content .sticker:hover {
-        background: rgba(255, 255, 255, .05);
+        background: rgba(255, 255, 255, 0.05);
     }
 
     .giphy {
@@ -466,11 +549,13 @@
             grid-template-columns: unset;
         }
 
-        .nav-bar, .userlist {
+        .nav-bar,
+        .userlist {
             display: none;
         }
 
-        .message-list, .message-input {
+        .message-list,
+        .message-input {
             width: 100vw;
         }
     }
