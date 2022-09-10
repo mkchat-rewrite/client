@@ -10,7 +10,7 @@
         await import("@lottiefiles/lottie-player");
         tata = await import("tata-js");
 
-        ws = new WebSocket("wss://server.mkchat.app");
+        ws = new WebSocket("wss://mk-chat-mk.herokuapp.com");
 
         ws.onopen = () => {
             ws.send(
