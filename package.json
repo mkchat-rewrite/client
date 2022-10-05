@@ -1,40 +1,37 @@
 {
-  "name": "mkchat-client",
-  "version": "0.0.1",
-  "devDependencies": {
-    "@sveltejs/adapter-node": "^1.0.0-next.83",
-    "@sveltejs/kit": "next",
-    "svelte": "^3.44.0",
-    "svelte-adapter-bun": "^0.3.1",
-    "svelte-check": "^2.7.1",
-    "svelte-preprocess": "^4.10.7",
-    "tslib": "^2.3.1",
-    "typescript": "^4.7.4",
-    "vite": "^3.1.0-beta.1",
-    "workbox-precaching": "^6.5.4",
-    "workbox-window": "^6.5.4"
+  "name": "my-qwik-basic-starter",
+  "description": "Recommended for your first Qwik app",
+  "engines": {
+    "node": ">=15.0.0"
   },
+  "private": true,
   "scripts": {
-    "dev": "vite dev",
-    "build": "vite build",
-    "package": "svelte-kit package",
-    "preview": "vite preview",
-    "start": "node build/index.js",
-    "check": "svelte-check --tsconfig ./tsconfig.json",
-    "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch"
+    "build": "qwik build",
+    "build.client": "vite build",
+    "build.preview": "vite build --ssr src/entry.preview.tsx",
+    "build.types": "tsc --incremental --noEmit",
+    "dev": "vite --mode ssr",
+    "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
+    "fmt": "prettier --write .",
+    "fmt.check": "prettier --check .",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "preview": "qwik build preview && vite preview --open",
+    "start": "vite --open --mode ssr",
+    "qwik": "qwik"
   },
-  "type": "module",
-  "dependencies": {
-    "@lottiefiles/lottie-player": "^1.5.7",
-    "@sveltejs/adapter-static": "^1.0.0-next.39",
-    "bson": "^4.6.5",
-    "reconnecting-websocket": "^4.4.0",
-    "tata-js": "^0.1.5",
-    "workbox": "^0.0.0",
-    "workbox-routing": "^6.5.4",
-    "workbox-strategies": "^6.5.4"
-  },
-  "overrides": {
-    "vite": "$vite"
+  "devDependencies": {
+    "@builder.io/qwik": "0.9.0",
+    "@builder.io/qwik-city": "0.0.111",
+    "@types/eslint": "8.4.6",
+    "@types/node": "latest",
+    "@typescript-eslint/eslint-plugin": "5.37.0",
+    "@typescript-eslint/parser": "5.37.0",
+    "eslint": "8.23.1",
+    "eslint-plugin-qwik": "0.9.0",
+    "node-fetch": "3.2.10",
+    "prettier": "2.7.1",
+    "typescript": "4.8.3",
+    "vite": "3.1.1",
+    "vite-tsconfig-paths": "3.5.0"
   }
 }
