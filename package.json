@@ -1,6 +1,6 @@
 {
-  "name": "my-qwik-basic-starter",
-  "description": "Recommended for your first Qwik app",
+  "name": "mkchat-client",
+  "description": "Web client for mkchat.app",
   "engines": {
     "node": ">=15.0.0"
   },
