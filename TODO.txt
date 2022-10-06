@@ -1,0 +1,11 @@
+- finish removing qwik template files
+- add tailwind or mastercss
+- establish design language for site & components
+- recreate old functionalities
+- chat page automatically scroll down when focusing bottom message, do not scroll if user has manually scrolled up
+- giphy integrations
+- render different server events and data as components instead of expecting pre-made html strings from the server ex. link embedding, join/leave events
+- emoji picker with different sections using data set provided by joy pixels
+- replace all emoji characters on the page with noto emoji svgs
+- (functional) moderation dashboard
+- adjust all requests/socket events to use new server api design philosophy (deno server branch)
