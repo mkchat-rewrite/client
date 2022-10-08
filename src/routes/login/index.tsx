@@ -8,13 +8,13 @@ export default component$(() => {
             <div class="grid w-96 gap-5">
                 <form class="grid gap-3">
                     <label class="block">
-                        <span class="block font-medium text-white/70">Username</span>
-                        <input type="text" class="bg-white/10 rounded-md py-2 px-3 text-white/80 border-1 border-white/50 outline-none w-full text-white">Signup</input>
+                        <span class="block font-medium text-white/70">Email</span>
+                        <input type="text" name="email" title="Invalid email address" class="bg-white/10 rounded-md py-2 px-3 text-white/80 border-1 border-white/50 outline-none w-full text-white">Signup</input>
                     </label>
 
                     <label class="block">
                         <span class="block font-medium text-white/70">Password</span>
-                        <input type="text" class="bg-white/10 rounded-md py-2 px-3 text-white/80 border-1 border-white/50 outline-none w-full text-white">Signup</input>
+                        <input type="password" name="password" class="bg-white/10 rounded-md py-2 px-3 text-white/80 border-1 border-white/50 outline-none w-full text-white">Signup</input>
                     </label>
 
                     <button type="submit" class="rounded-md mt-4 py-2 px-3 bg-indigo-600 w-full text-white hover:bg-indigo-700">Login</button>
