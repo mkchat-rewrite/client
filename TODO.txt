@@ -1,6 +1,3 @@
-- finish removing qwik template files
-- add tailwind or mastercss
-- establish design language for site & components
 - recreate old functionalities
 - chat page automatically scroll down when focusing bottom message, do not scroll if user has manually scrolled up
 - giphy integrations
