@@ -7,6 +7,9 @@ module.exports = {
         extend: {
             borderWidth: {
                 "1": "1px"
+            },
+            colors: {
+                "discord": "#7289da"
             }
         },
     },

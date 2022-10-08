@@ -14,10 +14,9 @@ export default component$(() => {
                     <Link href="/discord"><button class="rounded-md py-2 px-4 text-white/60 hover:underline">Discord Server</button></Link>
                 </div>
 
-
                 <div class="flex gap-4">
-                    <button class="rounded-md py-2 px-4 text-white/60 hover:underline">Login</button>
-                    <button class="bg-indigo-600/10 rounded-md py-2 px-4 text-white/80 border-1 border-indigo-600/80 hover:bg-indigo-600">Signup</button>
+                    <Link href="/login"><button class="rounded-md py-2 px-4 text-white/60 hover:underline">Login</button></Link>
+                    <Link href="/register"><button class="bg-indigo-600/10 rounded-md py-2 px-4 text-white/80 border-1 border-indigo-600/80 hover:bg-indigo-600">Register</button></Link>
                 </div>
             </div>
 
