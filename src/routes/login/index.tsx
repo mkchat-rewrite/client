@@ -36,7 +36,7 @@ export default component$(() => {
 
                 <div class="text-sm flex gap-1">
                     <span class="text-white/50">No account?</span>
-                    <Link href="/register" class="text-indigo-600/50 underline">Register</Link>
+                    <Link href="/register" class="text-indigo-600/60 underline">Register</Link>
                 </div>
             </div>
         </div>

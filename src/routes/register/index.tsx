@@ -41,7 +41,7 @@ export default component$(() => {
 
                 <div class="text-sm flex gap-1">
                     <span class="text-white/50">Have an account?</span>
-                    <Link href="/login" class="text-indigo-600/50 underline">Login</Link>
+                    <Link href="/login" class="text-indigo-600/60 underline">Login</Link>
                 </div>
             </div>
         </div>
