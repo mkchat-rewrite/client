@@ -5,13 +5,20 @@ import { Link } from "@builder.io/qwik-city";
 export default component$(() => {
     return (
         <>
+            <span class="bg-rose-600/50 text-sm w-full h-8 flex items-center justify-center gap-2">
+                <span class="text-white">Warning:</span>
+                <span class="text-white/70 flex gap-1">
+                    <span>This site is under construction, please return to</span>
+                    <Link class="underline" href="https://mkchat.app">https://mkchat.app</Link>
+                </span>
+            </span>
             <div class="h-24 flex items-center justify-between p-8">
                 <Link href="/"><h1 class="text-white">[LOGO]</h1></Link>
 
                 <div class="flex gap-3">
                     <Link href="/about"><button class="rounded-md py-2 px-4 text-white/60 hover:underline">About</button></Link>
                     <Link href="/rules"><button class="rounded-md py-2 px-4 text-white/60 hover:underline">Rules</button></Link>
-                    <Link href="/discord"><button class="rounded-md py-2 px-4 text-white/60 hover:underline">Discord Server</button></Link>
+                    <Link href="https://discord.com/invite/GbWngkTSZg" target="blank"><button class="rounded-md py-2 px-4 text-white/60 hover:underline">Discord Server</button></Link>
                 </div>
 
                 <div class="flex gap-4">
