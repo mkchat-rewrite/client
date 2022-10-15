@@ -6,7 +6,8 @@
         "lib": [
             "es2020",
             "DOM",
-            "WebWorker"
+            "WebWorker",
+            "dom.iterable"
         ],
         "jsx": "react-jsx",
         "jsxImportSource": "@builder.io/qwik",

@@ -6,7 +6,23 @@ export default component$(() => {
     return (
         <div class="w-screen h-screen grid place-items-center">
             <div class="grid w-96 gap-5">
-                <form class="grid gap-3">
+                <form class="grid gap-3" action="http://localhost:3000/oauth/account/register" method="POST" preventDefault:submit onSubmit$={async (event) => {
+                    const target = event.target as HTMLFormElement;
+                    const data = new FormData(event.target as HTMLFormElement);
+                    const formData = Array.from(data.entries()).map((e) => e.join("=")).join("&");
+
+                    await fetch(target.action, {
+                        method: target.method,
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded",
+                        },
+                        body: formData
+                    }).then(() => {
+                        console.log("success");
+                    }).catch(() => {
+                        console.log("failed");
+                    });
+                }}>
                     <label class="block">
                         <span class="block font-medium text-white/70">Email</span>
                         <input type="text" name="email" class="bg-white/10 rounded-md py-2 px-3 text-white/80 border-1 border-white/50 outline-none w-full text-white" />
