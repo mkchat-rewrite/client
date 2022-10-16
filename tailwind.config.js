@@ -9,7 +9,9 @@ module.exports = {
                 "1": "1px"
             },
             colors: {
-                "discord": "#7289da"
+                "discord": "#5865f2",
+                "brand-100": "#9688ff",
+                "brand-200": "#796cdc"
             }
         },
     },

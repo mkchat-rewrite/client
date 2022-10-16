@@ -1,7 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import { Link } from "@builder.io/qwik-city";
-import { Logo } from "~/components/logo";
 
 export default component$(() => {
     return (
@@ -24,7 +23,7 @@ export default component$(() => {
 
                 <div class="flex gap-4">
                     <Link href="/login"><button class="rounded-md py-2 px-4 text-white/60 hover:underline">Login</button></Link>
-                    <Link href="/register"><button class="bg-indigo-600/10 rounded-md py-2 px-4 text-white/80 border-1 border-indigo-600/80 hover:bg-indigo-600">Register</button></Link>
+                    <Link href="/register"><button class="bg-indigo-600/10 rounded-md py-2 px-4 text-white/80 border-1 border-brand-100/80 hover:bg-brand-100">Register</button></Link>
                 </div>
             </div>
 
