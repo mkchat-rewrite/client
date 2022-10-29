@@ -8,7 +8,7 @@ export default component$(() => {
     return (
         <div class="w-screen h-screen grid place-items-center">
             <div class="grid w-96 gap-5">
-                <form class="grid gap-3" action="https://server.mkchat.app/auth/account/register" method="POST" preventDefault:submit onSubmit$={async (event) => {
+                <form class="grid gap-3" action="https://api.mkchat.app/auth/account/register" method="POST" preventDefault:submit onSubmit$={async (event) => {
                     const target = event.target as HTMLFormElement;
                     const data = new FormData(event.target as HTMLFormElement);
                     const formData = Array.from(data.entries()).map((e) => e.join("=")).join("&");
