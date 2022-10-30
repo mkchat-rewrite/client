@@ -21,7 +21,7 @@ export default component$(() => {
                         body: formData
                     });
 
-                    console.log(await res.json());
+                    console.log(await res.text());
                 }}>
                     <div class="flex gap-2 mb-1">
                         <button class="flex justify-center items-center gap-2 rounded-md py-2 px-3 w-full bg-black/50 text-white">
