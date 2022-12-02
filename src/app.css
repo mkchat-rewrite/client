@@ -129,10 +129,17 @@ button:hover {
     line-height: normal;
 }
 
+.message .meta .badge span .fa-shield {
+	color: #5865f2;
+}
+
+.message .meta .badge span .fa-discord {
+	color: var(--accent);
+}
+
 .message .content .text .attachment {
-    max-width: 250px;
-    max-height: 250px;
-    min-height: 100px;
+    max-width: 300px;
+    max-height: 300px;
     margin-top: 0.5rem;
     display: block;
 }
