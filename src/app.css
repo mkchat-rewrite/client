@@ -130,11 +130,11 @@ button:hover {
 }
 
 .message .meta .badge span .fa-shield {
-	color: #5865f2;
+    color: var(--accent);
 }
 
 .message .meta .badge span .fa-discord {
-	color: var(--accent);
+    color: #5865f2;
 }
 
 .message .content .text .attachment {
