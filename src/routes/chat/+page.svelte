@@ -477,7 +477,8 @@
     }
 
     .message .meta .badge {
-        background: var(--accent);
+        background: rgba(0, 0, 0, .3);
+        color: rgba(255, 255, 255, .5);
         color: #f0f0f0;
         padding: 0.25rem 0.5rem;
         border: none;
