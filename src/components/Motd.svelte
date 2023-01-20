@@ -1,6 +1,6 @@
 <script>
     const fetchMotd = async () => {
-        const res = await fetch("https://mk-chat-mk.herokuapp.com/motd");
+        const res = await fetch("https://old-water-9407.fly.dev/api/motd");
         return await res.text();
     };
 </script>
