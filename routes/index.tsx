@@ -2,12 +2,12 @@ import { Head } from "$fresh/runtime.ts";
 
 export default function Home() {
     return (
-        <main style="background-color: #1b1b1b;" class="h-screen">
+        <main style="background-color: #141517;" class="h-screen">
             <Head>
-                <title>mkchat</title>
+                <title>Obsidian</title>
             </Head>
             <div class="p-4 mx-auto max-w-screen-md flex flex-col gap-4">
-                <h1 class="text-4xl font-bold text-white">mkchat</h1>
+                <h1 class="text-4xl font-bold text-white">Obsidian</h1>
 
                 <div>
                     <input type="text" class="w-96 p-2 my-4 border border-gray-300 rounded-md" placeholder="Chat Message" />
